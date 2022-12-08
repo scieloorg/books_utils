@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 import os
 import requests
 import argparse
@@ -17,7 +16,7 @@ def get_distinct_authors_total(api_host='localhost', api_port='5984', author_pro
     authors = set() if bool(distinct) else []
 
     # csv
-    f = open('%s_%s.csv' % (publisher, author_profile), 'w')
+    f = open('%s_%s.csv' % (publisher, author_profile), 'w', encoding="utf-8")
 
     # create the csv writer
     writer = csv.writer(f, delimiter="|")
@@ -40,7 +39,7 @@ def get_distinct_authors_total(api_host='localhost', api_port='5984', author_pro
 
         if 'creators' in reg['doc']:
             if len(reg['doc']['creators']) > 0:
-                
+
                 for creator_data in reg['doc']['creators']:
 
                     if creator_data[0][0] == 'role':
@@ -50,19 +49,19 @@ def get_distinct_authors_total(api_host='localhost', api_port='5984', author_pro
                         name = creator_data[1][1]
 
                     if author_profile == 'all':
-                        if distinct: 
+                        if distinct:
                             authors.add(name)
                         else:
                             authors.append(name)
 
                     elif role == author_profile:
-                        if distinct: 
+                        if distinct:
                             authors.add(name)
                         else:
                             authors.append(name)
 
                     # write a row to the csv file
-                    writer.writerow([reg['doc']['_id'], regpub, name, author_profile])       
+                    writer.writerow([reg['doc']['_id'], regpub, name, author_profile])
 
         if 'monograph_creators' in reg['doc']:
             if len(reg['doc']['monograph_creators']) > 0:
@@ -76,19 +75,19 @@ def get_distinct_authors_total(api_host='localhost', api_port='5984', author_pro
                         name = creator_data[1][1]
 
                     if author_profile == 'all':
-                        if distinct: 
+                        if distinct:
                             authors.add(name)
                         else:
                             authors.append(name)
 
                     elif role == author_profile:
-                        if distinct: 
+                        if distinct:
                             authors.add(name)
                         else:
                             authors.append(name)
-                
+
                     # write a row to the csv file
-                    writer.writerow([reg['doc']['_id'], regpub, name, author_profile])       
+                    writer.writerow([reg['doc']['_id'], regpub, name, author_profile])
 
     # close the file
     f.close()
